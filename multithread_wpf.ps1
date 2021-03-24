@@ -73,7 +73,7 @@ $WPFCheckBox_Reboot.Add_Click( {
 
 $WPFButton_Confirm.Add_Click( {
 
-$data = "title"
+$global:data = "title"
 
 $Runspace = [runspacefactory]::CreateRunspace()
 $PowerShell = [powershell]::Create()
@@ -143,14 +143,28 @@ Compare-somefunction -Path "\\server\path\here"
             Start-Sleep -Seconds 1
            [System.Windows.Forms.MessageBox]::Show($_,$a.Value,'OK',64) | Out-Null
         }
+
+        $a.value = "Done"
+
         })
 $PowerShell.AddArgument([ref]$data)
 $PowerShell.BeginInvoke()
+
+   $timer = New-Object System.Windows.Forms.Timer
+   $timer.Interval = 2000
+   $timer.Enabled = $true
+
+   $timer.add_Tick({
+   write-host $data
+   #   $timer.Enabled = $false
+         })
 
      #   Pause
     #    $form.Close()
 
     })
+
+ 
 
 
 
